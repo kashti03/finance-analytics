@@ -8,7 +8,7 @@ terraform {
   
   backend "s3" {
     bucket = "terraform-state-bucket"
-    key    = "projects/financial-analytics.tfstate"
+    key    = "projects/finance-analytics.tfstate"
     region = "us-east-1"
   }
 }

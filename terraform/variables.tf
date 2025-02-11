@@ -7,7 +7,7 @@ variable "aws_region" {
 variable "project_name" {
   description = "Project name to be used for resource naming"
   type        = string
-  default     = "financial-analytics"
+  default     = "finance-analytics"
 }
 
 variable "environment" {

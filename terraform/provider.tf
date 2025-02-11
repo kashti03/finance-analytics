@@ -9,7 +9,7 @@ terraform {
   backend "s3" {
     bucket = "727646514588-terraform-state-bucket"
     key    = "projects/finance-analytics.tfstate"
-    region = "us-east-1"
+    region = "us-west-2"
   }
 }
 

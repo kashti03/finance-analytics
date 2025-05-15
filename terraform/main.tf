@@ -21,7 +21,37 @@ resource "aws_dynamodb_table" "finance_data" {
     Project     = var.project_name
   }
 }
+resource "aws_dynamodb_table" "order_report_data" {
+  name         = "${var.environment}_order_report_data"
+  billing_mode = var.dynamodb_billing_mode
+  hash_key     = "id"
 
+  attribute {
+    name = "id"
+    type = "S"
+  }
+
+  tags = {
+    Environment = var.environment
+    Project     = var.project_name
+  }
+}
+
+resource "aws_dynamodb_table" "product_report_data" {
+  name         = "${var.environment}_product_report_data"
+  billing_mode = var.dynamodb_billing_mode
+  hash_key     = "id"
+
+  attribute {
+    name = "id"
+    type = "S"
+  }
+
+  tags = {
+    Environment = var.environment
+    Project     = var.project_name
+  }
+}
 # IAM Role for Lambda
 resource "aws_iam_role" "lambda_role" {
   name = "${var.environment}-lambda-role"
@@ -58,7 +88,9 @@ resource "aws_iam_role_policy" "lambda_policy" {
           "dynamodb:Query",
           "dynamodb:Scan"
         ]
-        Resource = [aws_dynamodb_table.finance_data.arn]
+        Resource = ["${aws_dynamodb_table.finance_data.arn}",
+          "${aws_dynamodb_table.order_report_data.arn}",
+          "${aws_dynamodb_table.product_report_data.arn}"]
       },
       {
         Effect = "Allow"
@@ -84,10 +116,12 @@ resource "aws_lambda_function" "data_analytics_lambda" {
   runtime = "python3.12"
 
   environment {
-    variables = {
-      DYNAMODB_TABLE = aws_dynamodb_table.finance_data.name
-    }
+  variables = {
+    FINANCE_TABLE_NAME        = aws_dynamodb_table.finance_data.name
+    ORDER_REPORT_TABLE_NAME   = aws_dynamodb_table.order_report_data.name
+    PRODUCT_REPORT_TABLE_NAME = aws_dynamodb_table.product_report_data.name
   }
+}
 
   tags = {
     Environment = var.environment

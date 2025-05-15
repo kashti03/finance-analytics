@@ -49,5 +49,5 @@ def sql_to_csv(file_path):
     return csv_file_path
 
 # Example usage
-sql_file_path = "data\product_report_data.sql"  # Change this to your actual .sql file path
+sql_file_path = "data\product_report_data.sql"  
 sql_to_csv(sql_file_path)
